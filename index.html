@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>貓咪咖啡廳 Cat Café</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans TC", sans-serif;
+      background: #fffaf3;
+      color: #554438;
+      line-height: 1.8;
+    }
+    header {
+      background: #8b6b52;
+      color: white;
+      text-align: center;
+      padding: 48px 20px;
+    }
+    header h1 { font-size: 38px; margin: 0; }
+    nav {
+      background: #f0dfca;
+      padding: 12px;
+      text-align: center;
+    }
+    nav a {
+      color: #554438;
+      text-decoration: none;
+      margin: 0 14px;
+      font-weight: bold;
+    }
+    section {
+      max-width: 900px;
+      margin: auto;
+      padding: 35px 20px;
+    }
+    h2 {
+      text-align: center;
+      color: #8b6b52;
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 3px 12px #0000000d;
+    }
+    .emoji { font-size: 52px; }
+    .price { color: #ad7045; font-weight: bold; }
+    form {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+    }
+    label {
+      display: block;
+      margin-top: 14px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ddcbb8;
+      border-radius: 8px;
+      font: inherit;
+    }
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #8b6b52;
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    button:hover { background: #6f503a; }
+    #result { text-align: center; color: #39734a; }
+    footer {
+      background: #f0dfca;
+      text-align: center;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🐱 貓咪咖啡廳</h1>
+  <p>一杯咖啡，一份甜點，一段療癒時光。</p>
+</header>
+
+<nav>
+  <a href="#about">關於我們</a>
+  <a href="#menu">人氣甜點</a>
+  <a href="#order">甜點訂購</a>
+</nav>
+
+<section id="about">
+  <h2>關於我們</h2>
+  <p style="text-align:center">
+    歡迎來到貓咪咖啡廳！我們提供香醇咖啡、
+    精緻甜點與溫馨的空間，讓每位客人都能
+    在可愛貓咪的陪伴下，享受悠閒的午後時光。
+  </p>
+</section>
+
+<section id="menu">
+  <h2>人氣甜點 MENU</h2>
+  <div class="menu">
+    <div class="card">
+      <div class="emoji">🍰</div>
+      <h3>草莓奶油蛋糕</h3>
+      <p>香甜草莓與綿密奶油。</p>
+      <p class="price">NT$ 150</p>
+    </div>
+    <div class="card">
+      <div class="emoji">🍫</div>
+      <h3>濃郁巧克力蛋糕</h3>
+      <p>享受香濃可可的美味。</p>
+      <p class="price">NT$ 140</p>
+    </div>
+    <div class="card">
+      <div class="emoji">🍮</div>
+      <h3>焦糖布丁</h3>
+      <p>滑嫩口感搭配焦糖香氣。</p>
+      <p class="price">NT$ 90</p>
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <h2>甜點寄送訂購單</h2>
+  <p style="text-align:center">填寫資料，讓甜蜜送到你家！</p>
+
+  <form id="orderForm">
+    <label for="name">顧客姓名 *</label>
+    <input id="name" name="name" required>
+
+    <label for="phone">聯絡電話 *</label>
+    <input id="phone" name="phone"
+      type="tel" required>
+
+    <label for="address">收件地址 *</label>
+    <input id="address" name="address" required>
+
+    <label for="dessert">選擇甜點 *</label>
+    <select id="dessert" name="dessert" required>
+      <option value="">請選擇甜點</option>
+      <option>草莓奶油蛋糕 - NT$150</option>
+      <option>巧克力蛋糕 - NT$140</option>
+      <option>焦糖布丁 - NT$90</option>
+    </select>
+
+    <label for="quantity">訂購數量 *</label>
+    <input id="quantity" name="quantity"
+      type="number" min="1" value="1" required>
+
+    <label for="date">希望送達日期</label>
+    <input id="date" name="date" type="date">
+
+    <label for="note">備註</label>
+    <textarea id="note" name="note" rows="3"
+      placeholder="請輸入其他需求"></textarea>
+
+    <button type="submit">送出訂購資料</button>
+    <p id="result" role="status"></p>
+  </form>
+</section>
+
+<footer>
+  <p>🐾 貓咪咖啡廳 Cat Café</p>
+  <p>用甜點與溫暖，陪伴你的每一天。</p>
+</footer>
+
+<script>
+  document.getElementById("orderForm")
+    .addEventListener("submit", function(event) {
+      event.preventDefault();
+      document.getElementById("result").textContent =
+        "表單格式確認完成！目前為展示版本，尚未實際傳送訂單。";
+    });
+</script>
+
+</body>
+</html>
