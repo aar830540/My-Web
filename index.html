@@ -1,93 +1,101 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>聯絡我們</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-    }
-    .contact-card {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-    .contact-card h2 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: #666;
-    }
-    .form-group input, 
-    .form-group textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    .btn-submit {
-      width: 100%;
-      padding: 12px;
-      background-color: #007bff;
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .btn-submit:hover {
-      background-color: #0056b3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聯絡我們</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; background-color: #f9f9f9; }
+        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        h2 { margin-top: 0; color: #333; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        input, textarea { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        textarea { height: 120px; resize: vertical; }
+        button { background-color: #007BFF; color: white; border: none; padding: 12px 20px; cursor: pointer; border-radius: 4px; font-size: 16px; width: 100%; transition: background 0.2s; }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        #status { margin-top: 15px; text-align: center; font-weight: bold; }
+    </style>
 </head>
 <body>
 
-  <div class="contact-card">
-    <h2>聯絡我們</h2>
-    <!-- 已修正為正確的 form 標籤 -->
-    <form action="https://formspree.io/f/mgaaqkak" method="POST">
-      
-      <div class="form-group">
-        <label for="name">姓名</label>
-        <input type="text" id="name" name="姓名" required placeholder="請輸入姓名">
-      </div>
+    <div class="form-container">
+        <h2>與我們聯絡</h2>
+        
+        <form id="contactForm" action="https://formspree.io/f/mgaaqkak" method="POST">
+            <!-- 防垃圾信蜜罐欄位（使用者看不到） -->
+            <input type="text" name="_gotcha" style="display:none">
 
-      <div class="form-group">
-        <label for="phone">電話</label>
-        <input type="tel" id="phone" name="電話" required placeholder="請輸入聯絡電話">
-      </div>
+            <div class="form-group">
+                <label for="name">姓名：</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">電話：</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="email">EMAIL：</label>
+                <input type="email" id="email" name="_replyto" required>
+            </div>
+            <div class="form-group">
+                <label for="message">聯絡內容：</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" id="submitBtn">送出訊息</button>
+        </form>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="Email" required placeholder="請輸入電子郵件">
-      </div>
+        <div id="status"></div>
+    </div>
 
-      <div class="form-group">
-        <label for="message">聯絡內容</label>
-        <textarea id="message" name="聯絡內容" rows="5" required placeholder="請輸入留言內容..."></textarea>
-      </div>
+    <script>
+        const form = document.getElementById("contactForm");
+        
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const status = document.getElementById("status");
+            const btn = document.getElementById("submitBtn");
+            
+            btn.disabled = true;
+            status.textContent = "傳送中...";
+            status.style.color = "#007BFF";
+            
+            const data = new FormData(event.target);
+            
+            try {
+                const response = await fetch(event.target.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
 
-      <button type="submit" class="btn-submit">送出訊息</button>
-    </form>
-  </div>
+                if (response.ok) {
+                    status.textContent = "感謝您的填寫！訊息已順利送出。";
+                    status.style.color = "green";
+                    form.reset();
+                } else {
+                    const result = await response.json();
+                    if (Object.hasOwn(result, 'errors')) {
+                        status.textContent = result.errors.map(error => error.message).join(", ");
+                    } else {
+                        status.textContent = "發送失敗，請稍後再試。";
+                    }
+                    status.style.color = "red";
+                }
+            } catch (error) {
+                status.textContent = "發生錯誤，請檢查您的網路連線。";
+                status.style.color = "red";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+        
+        form.addEventListener("submit", handleSubmit);
+    </script>
 
 </body>
 </html>
+
